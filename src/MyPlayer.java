@@ -4,44 +4,53 @@ public class MyPlayer {
     public Chip[][] gameBoard;
     public int[] columns;
     public TreeMap<Long, Board> findBoards = new TreeMap<>();
+    public int n;
     public MyPlayer() {
         columns = new int[10];
-        int n = 10;
-
-        for(int i = 0; i<n; i++) {
-            int last = i;
-            for(int j = 1; j<n; j++) {
-
-            }
-            for(int j = i; j>=0; j--) {
-                for(int k = j; k>=0; k--) {
-                    Board b = new Board(new int[]{i,j,k});
-                    findBoards.put(b.key, b);
-                }
-            }
-            System.out.println();
-        }
-        for(Long l: allBoards(new int[]{3, 0, 0})) System.out.println(l);
-
+        n = 10;
+        int[] start = new int[n];
+        genAll(start, 0);
+//        for(int i = 0; i<n; i++) {
+//            int last = i;
+//            for(int j = i; j>=0; j--) {
+//                for(int k = j; k>=0; k--) {
+//                    Board b = new Board(new int[]{i,j,k});
+//                    findBoards.put(b.key, b);
+//                }
+//            }
+//            System.out.println();
+//        }
+        findBoards.remove((long) 0);
+        int in = 0;
         for(Board b: findBoards.values()) {
-            System.out.print("Initial Board: ");printArray(b.board);
-            System.out.println();
+            in++;
+            System.out.println(b.key);
+            if(in>1000) break;
+        }
+        for(Board b: findBoards.values()) {
+//            System.out.print("Initial Board: ");printArray(b.board);
+//            System.out.println();
             for(Long l: allBoards(b.board)) {
 //                System.out.println(l);
                 b.next.add(findBoards.get(l));
-                printArray(findBoards.get(l).board);
+//                printArray(findBoards.get(l).board);
                 findBoards.get(l).prev.add(b);
             }
-            System.out.println();
-            System.out.println();
+//            System.out.println();
+//            System.out.println();
         }
         int[] initial = new int[n];
         initial[0] = 1;
 //        TEMPORARY:
-        initial = new int[3];
-        initial[0] = 1;
+//        initial = new int[3];
+//        initial[0] = 1;
         long l = Board.boardToLong(initial);
         System.out.println("wtf: " + findBoards.get(l));
+
+        for(long l2: findBoards.keySet()) {
+            System.out.println(l2);
+        }
+
         getWinningStates(findBoards.get(l));
 
         System.out.println();
@@ -53,31 +62,57 @@ public class MyPlayer {
          * Add your code here.
          */
 
-        for(Board b: findBoards.values()) {
-            System.out.println(b.key);
-            System.out.println(b.winState);
-            System.out.println();
-        }
-        for(Board b: findBoards.get((long) 20000).next) {
-            System.out.println(b.key);
-        }
+//        for(Board b: findBoards.values()) {
+//            System.out.println(b.key);
+//            System.out.println(b.winState);
+//            System.out.println();
+//        }
+//        for(Board b: findBoards.get((long) 20000).next) {
+//            System.out.println(b.key);
+//        }
         int[] square = new int[n];
+        square[0] = 1;
         for(int i = 0; i<n; i++) square[i] = n;
+
         l = Board.boardToLong(square);
         Board cur = findBoards.get(l);
+        System.out.println("FML");
 
+        for(Board prev: cur.prev) {
+            printArray(prev.board);
+        }
+        System.out.println("FML");
+        System.out.println();
+    }
+    public void genAll(int[] board, int index) {
+        if(index>=n) {
+            Board b = new Board(board);
+            findBoards.put(b.key, b);
+            return;
+        }
+        int max;
+        if(index == 0) max = n;
+        else max = board[index-1];
+        for(int i = max; i>=0; i--) {
+            int[] copy = copyArray(board);
+            copy[index] = i;
+            genAll(copy, index+1);
+        }
     }
     public void getWinningStates(Board losing) {
+        if(losing.winState != null) return;
         losing.winState = false;
         for(Board b: losing.prev) {
             b.winState = true;
         }
         for(Board b: losing.prev) {
-            getLosingStates(b);
+                getLosingStates(b);
         }
     }
     public void getLosingStates(Board winning) {
+
         for(Board b: winning.prev) {
+            if(b.winState!=null) continue;
             if(losing(b)) {
                 b.winState=false;
                 getWinningStates(b);
@@ -94,6 +129,11 @@ public class MyPlayer {
         }
         return true;
     }
+
+//    public ArrayList<Long> oneMove(int[] curBoard) {
+//
+//    }
+
     public ArrayList<Long> allBoards(int[] curBoard) {
         ArrayList<Long> ret = new ArrayList<>();
         for(int i = 0; i< curBoard.length; i++) {
@@ -107,7 +147,7 @@ public class MyPlayer {
                 if(result>0)ret.add(Board.boardToLong(newBoard));
             }
         }
-        ret.remove((Integer)0);
+        ret.remove((long)0);
         return ret;
     }
     public void printArray(int[] arr) {
