@@ -30,7 +30,9 @@ public class Board implements Comparable<Board> {
 
     @Override
     public int compareTo(Board o) {
-        if(this.key>o.key) return 1;
+        if(this.key>0 && o.key<0) return 1;
+        else if(this.key<0 && o.key>0) return -1;
+        else if(this.key>o.key) return 1;
         else if (this.key == o.key) return 0;
         else return -1;
     }
