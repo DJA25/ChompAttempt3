@@ -167,13 +167,14 @@ public class old_MyPlayer {
 
         for(Board b: winning.prev) {
             if(b.winState!=null) continue;
-            if(losing(b)) {
+            Boolean state = losing(b);
+            if(state == false) {
 //                b.winState=false;
                 getWinningStates(b);
             }
         }
     }
-    public boolean losing(Board b) {
+    public Boolean losing(Board b) {
         for(Board winning: b.next) {
             if(winning.winState == null) return false;
             if(winning.winState == false) {
