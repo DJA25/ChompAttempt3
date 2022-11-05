@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.*;
 
 public class Board implements Comparable<Board> {
+    // ONLY THE BOARDTOLONG FUNCTION IS USED IN THE FINAL VERSION
     long key;
     Boolean winState = null;
     TreeSet<Board> prev = new TreeSet<>();

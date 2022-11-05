@@ -27,22 +27,22 @@ public class MyPlayer {
 
     }
 
-    public void genAll(int[] board, int index) {
-        if (index >= n) {
-            allBoards(board);
-            return;
-        }
-        int max;
-        if (index == 0) max = n;
-        else max = board[index - 1];
-        int min = 0;
-        if (index == 0) min++;
-        for (int i = min; i <= max; i++) {
-            int[] copy = copyArray(board);
-            copy[index] = i;
-            genAll(copy, index + 1);
-        }
-    }
+//    public void genAll(int[] board, int index) {
+//        if (index >= n) {
+//            allBoards(board);
+//            return;
+//        }
+//        int max;
+//        if (index == 0) max = n;
+//        else max = board[index - 1];
+//        int min = 0;
+//        if (index == 0) min++;
+//        for (int i = min; i <= max; i++) {
+//            int[] copy = copyArray(board);
+//            copy[index] = i;
+//            genAll(copy, index + 1);
+//        }
+//    }
     public void genAll2(int[] board, int index) {
         if (index >= n) {
             allBoards(board);
