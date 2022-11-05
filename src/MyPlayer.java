@@ -16,7 +16,7 @@ public class MyPlayer {
         int[] start = new int[n];
         start[0] = 1;
         winners.put(Board.boardToLong(start), false);
-        genAll(start, 0);
+        genAll2(start, 0);
         System.out.println("Done algorithm");
         int[] testBoard = new int[]{2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         long testKey = Board.boardToLong(testBoard);
@@ -42,6 +42,21 @@ public class MyPlayer {
             genAll(copy, index + 1);
         }
     }
+    public void genAll2(int[] board, int index) {
+        if (index >= n) {
+            allBoards(board);
+            return;
+        }
+        int max;
+        if (index == 0) max = n;
+        else max = board[index - 1];
+        int min = 0;
+        if (index == 0) min++;
+        for (int i = min; i <= max; i++) {
+            board[index] = i;
+            genAll(board, index + 1);
+        }
+    }
 
     //    public void winning(int[] board) {
 //        long key = Board.boardToLong(board);
@@ -55,6 +70,7 @@ public class MyPlayer {
 //        }
 //        winners.put(key, false);
 //    }
+
     public void allBoards(int[] curBoard) {
         long key = Board.boardToLong(curBoard);
         for (int i = 0; i < curBoard.length; i++) {

@@ -25,6 +25,15 @@ public class Board implements Comparable<Board> {
         }
         return ret;
     }
+    static int[] longToBoard(long key) {
+        int[] board = new int[10];
+        for(int i = 9; i>=0; i--) {
+            board[i] = (int)key%10;
+            key/=10;
+
+        }
+        return board;
+    }
 
 
 
